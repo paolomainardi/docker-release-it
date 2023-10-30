@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@release-it/keep-a-changelog": "^4.0.0",
+    "release-it": "^16.2.1"
+  }
+}

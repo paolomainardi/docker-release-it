@@ -1,2 +1,4 @@
-# docker-release-it
-A simple container to run release-it in 
+# Dockerised Release-it 
+
+A simple container to run release-it with a set of opinionated modules.
+
