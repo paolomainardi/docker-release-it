@@ -10,18 +10,18 @@ fi
 # Reconfigure the PATH to have nodejs binaries installed.
 export PATH=/release-it/node_modules/.bin:${PATH}
 
-if [[ -z $GITLAB_USER_NAME ]]; then
+if [[ ! -z $GITLAB_USER_NAME ]]; then
   git config --global user.name "${GITLAB_USER_NAME}"
 fi
-if [[ -z $GITLAB_USER_EMAIL ]]; then
+if [[ ! -z $GITLAB_USER_EMAIL ]]; then
   git config --global user.email "${GITLAB_USER_EMAIL}"
 fi
 
 # Set current directory as a safe directory.
-git config --global --add safe.directory "${PWD}"
+git config --global --add safe.directory "${BASE}"
 
 # Set branch on gitlab-ci environment.
-if [[ -z $CI_COMMIT_REF_NAME ]]; then
+if [[ ! -z $CI_COMMIT_REF_NAME ]]; then
   git checkout "${CI_COMMIT_REF_NAME}"
 fi
 
