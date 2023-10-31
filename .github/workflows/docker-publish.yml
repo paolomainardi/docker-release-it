@@ -47,3 +47,10 @@ jobs:
       # Cosign the OCI artifact
       - name: Sign the OCI artifact
         run: cosign sign ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -y
+        env:
+          COSIGN_EXPERIMENTAL: 1
+
+      - name: Verify the pushed tags
+        run: cosign verify ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        env:
+          COSIGN_EXPERIMENTAL: 1
