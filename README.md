@@ -2,3 +2,14 @@
 
 A simple container to run release-it with a set of opinionated modules.
 
+At the time of writing it contains (because i need it) the following dependencies:
+
+```
+
+  "dependencies": {
+    "@release-it/keep-a-changelog": "^4.0.0",
+    "release-it": "^16.2.1"
+  }
+}
+```
+
