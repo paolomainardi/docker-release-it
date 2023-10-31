@@ -38,7 +38,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)
 
       # Install Cosign
       - uses: sigstore/cosign-installer@main
@@ -55,3 +55,7 @@ jobs:
       # Cosign the OCI artifact
       - name: Sign the OCI artifact
         run: cosign sign ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.crane.outputs.DIGEST }} -y
+
+      # Cosign the OCI artifact
+      - name: Sign the OCI artifact
+        run: cosign sign ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest -y
