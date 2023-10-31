@@ -2,6 +2,11 @@
 set -eo pipefail
 BASE=${PWD}
 
+# Enable trace if TRACE is set.
+if [[ -z ${TRACE} ]]; then
+  set -x
+fi
+
 # Reconfigure the PATH to have nodejs binaries installed.
 export PATH=/release-it/node_modules/.bin:${PATH}
 
@@ -15,8 +20,10 @@ fi
 # Set current directory as a safe directory.
 git config --global --add safe.directory "${PWD}"
 
-# release-it work just on branches.
-git checkout "${CI_COMMIT_REF_NAME}"
+# Set branch on gitlab-ci environment.
+if [[ -z $CI_COMMIT_REF_NAME ]]; then
+  git checkout "${CI_COMMIT_REF_NAME}"
+fi
 
 # Run release-it.
 release-it "${@}"
