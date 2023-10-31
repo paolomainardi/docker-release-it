@@ -39,3 +39,16 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+      # Install Cosign
+      - uses: sigstore/cosign-installer@main
+
+      - name: Get the digest of the OCI artifact
+        id: crane
+        run: |
+          DIGEST=$(crane digest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD))
+          echo "DIGEST=$DIGEST" >> $GITHUB_OUTPUT
+
+      # Cosign the OCI artifact
+      - name: Sign the OCI artifact
+        run: cosign sign ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.crane.outputs.DIGEST }} -y
