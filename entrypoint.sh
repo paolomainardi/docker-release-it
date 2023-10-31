@@ -2,8 +2,8 @@
 set -eo pipefail
 BASE=${PWD}
 
-# Enable trace if TRACE is set.
-if [[ -z ${TRACE} ]]; then
+# Enable trace if DEBUG_TRACE is set.
+if [[ ! -z ${DEBUG_TRACE} ]]; then
   set -x
 fi
 
