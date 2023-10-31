@@ -60,4 +60,8 @@ jobs:
           COSIGN_EXPERIMENTAL: 1
 
       - name: Verify the image signing
-        run: cosign verify --certificate-identity "https://github.com/paolo.mainardi/docker-release-it/.github/workflows/docker-publish.yml@refs/heads/main" --certificate-oidc-issuer "https://token.actions.githubusercontent.com" | jq .
+        run: |
+          cosign verify \
+            --certificate-identity "https://github.com/paolo.mainardi/docker-release-it/.github/workflows/docker-publish.yml@refs/heads/main" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.push-step.outputs.digest }} | jq .
