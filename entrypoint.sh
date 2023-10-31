@@ -1,5 +1,8 @@
 #!/bin/sh
-set -eo pipefail
+set -o errtrace
+set -o errexit
+set -o pipefail
+
 BASE=${PWD}
 
 # Enable trace if DEBUG_TRACE is set.
@@ -23,6 +26,13 @@ git config --global --add safe.directory "${BASE}"
 # Set branch on gitlab-ci environment.
 if [[ ! -z $CI_COMMIT_REF_NAME ]]; then
   git checkout "${CI_COMMIT_REF_NAME}"
+fi
+
+# If we set a gitlab project token, we can use it to push to the repository.
+# Taken from here: https://github.com/sparkfabrik/spark-k8s-deployer/blob/master/templates/scripts/ci_releases/setup_repo_for_writing.sh
+if [[ ( ! -z ${GITLAB_PROJECT_RW_AND_API_TOKEN} ) ]]; then
+  NEWREMOTEURL=$(echo "${CI_REPOSITORY_URL}" | sed -e "s|.*@\(.*\)|$CI_SERVER_PROTOCOL://$GITLAB_PROJECT_RW_AND_API_TOKEN@\1|")
+  git remote set-url origin "${NEWREMOTEURL}"
 fi
 
 # Run release-it.
