@@ -31,7 +31,14 @@ fi
 # If we set a gitlab project token, we can use it to push to the repository.
 # Taken from here: https://github.com/sparkfabrik/spark-k8s-deployer/blob/master/templates/scripts/ci_releases/setup_repo_for_writing.sh
 if [[ ! -z "${GITLAB_PROJECT_RW_AND_API_TOKEN}" ]]; then
+  # Validate the variable.
+  IFS=':' read -ra GITLAB_PROJECT_VALIDATE <<< "${GITLAB_PROJECT_RW_AND_API_TOKEN}"
+  if [[ "${#GITLAB_PROJECT_VALIDATE[@]}" -ne 2 ]]; then
+    echo "The GITLAB_PROJECT_RW_AND_API_TOKEN variable is not valid. It should be in the form of <project_id>:<token>."
+    exit 1
+  fi
   NEWREMOTEURL=$(echo "${CI_REPOSITORY_URL}" | sed -e "s|.*@\(.*\)|$CI_SERVER_PROTOCOL://$GITLAB_PROJECT_RW_AND_API_TOKEN@\1|")
+  echo "Setting a new origin using the token specified at GITLAB_PROJECT_RW_AND_API_TOKEN variable."
   git remote set-url origin "${NEWREMOTEURL}"
 fi
 
