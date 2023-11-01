@@ -43,5 +43,9 @@ if [[ ! -z "${GITLAB_PROJECT_RW_AND_API_TOKEN}" ]]; then
   git remote set-url origin "${NEWREMOTEURL}"
 fi
 
-# Run release-it.
-release-it --disable-metrics "${@}"
+# if command starts with an option, prepend release-it
+if [ "${1:0:1}" = '-' ]; then
+		set -- release-it --disable-metrics "$@"
+fi
+
+exec "$@"
