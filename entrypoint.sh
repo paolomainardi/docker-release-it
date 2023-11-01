@@ -44,4 +44,4 @@ if [[ ! -z "${GITLAB_PROJECT_RW_AND_API_TOKEN}" ]]; then
 fi
 
 # Run release-it.
-release-it "${@}"
+release-it --disable-metrics "${@}"
