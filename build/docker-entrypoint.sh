@@ -4,7 +4,11 @@ set -o errtrace
 set -o errexit
 set -o pipefail
 
+
+# Set default values for the variables.
 BASE=${PWD}
+DOCKER_RELEASE_IT_BASE_TEMPLATE_FILE="/templates/.release-it.json.tpl"
+DOCKER_RELEASE_IT_USE_BASE_TEMPLATE="true"
 
 # Enable trace if DEBUG_TRACE is set.
 if [[ ! -z ${DEBUG_TRACE} ]]; then
@@ -42,6 +46,9 @@ if [[ ! -z "${GITLAB_PROJECT_RW_AND_API_TOKEN}" ]]; then
   echo "Setting a new origin using the token specified at GITLAB_PROJECT_RW_AND_API_TOKEN variable."
   git remote set-url origin "${NEWREMOTEURL}"
 fi
+
+# Run plugins.
+run-parts -v --exit-on-error /plugins.d
 
 # if command starts with an option or is empty, prepend release-it
 if [ "${1}" = 'shell' ]; then

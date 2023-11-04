@@ -34,4 +34,3 @@ To run a shell inside the container:
 ```bash
 > docker run --rm -it paolomainardi/release-it shell
 ```
-

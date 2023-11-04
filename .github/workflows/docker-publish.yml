@@ -22,6 +22,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Run tests
+        run: |
+          ./tests/runner.sh
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -42,7 +46,7 @@ jobs:
         id: push-step
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: build
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
