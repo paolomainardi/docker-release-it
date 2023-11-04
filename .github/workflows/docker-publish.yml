@@ -3,7 +3,7 @@ name: Create and publish a Docker image
 
 on:
   push:
-    branches: ["main"]
+    branches: ["*"]
 
 env:
   REGISTRY: ghcr.io
@@ -22,10 +22,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run tests
-        run: |
-          ./tests/runner.sh
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -38,16 +34,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Run tests
+        run: |
+          ./tests/runner.sh
+
       - name: Generate uuid from shortened commit SHA
         id: uuid
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Build and push
+        if: ${{ github.ref == 'refs/heads/main' }}
         id: push-step
         uses: docker/build-push-action@v5
         with:
           context: build
-          push: true
+          push: ${{ github.ref == 'refs/heads/main' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64
@@ -56,14 +57,17 @@ jobs:
 
       # Install Cosign
       - uses: sigstore/cosign-installer@main
+        if: ${{ github.ref == 'refs/heads/main' }}
 
       # Cosign the OCI artifact
       - name: Sign the OCI artifact
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: cosign sign --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.push-step.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: 1
 
       - name: Verify the image signing
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           cosign verify \
             --certificate-identity "https://github.com/paolomainardi/docker-release-it/.github/workflows/docker-publish.yml@refs/heads/main" \
