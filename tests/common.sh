@@ -5,6 +5,8 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color.
 
+DOCKER_IMAGE="paolomainardi/release-it-test"
+
 fail() {
   echo -e "${RED}FAIL${NC}"
   echo "Expected: ${1}"
@@ -17,7 +19,7 @@ ok() {
 }
 
 build() {
-  docker build -t paolomainardi/release-it-test -f build/Dockerfile .
+  docker build -t ${DOCKER_IMAGE} -f build/Dockerfile .
 }
 
 run() {
@@ -38,7 +40,7 @@ run() {
         -v $(pwd)/build/plugins.d:/usr/local/bin/plugins.d \
 		-v $(pwd)/templates:/templates \
         -v $(pwd)/tests:/tests \
-		-v $(pwd)}:/app paolomainardi/release-it -c "${@}"
+		-v $(pwd)}:/app ${DOCKER_IMAGE} -c "${@}"
 }
 
 test() {
