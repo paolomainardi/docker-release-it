@@ -21,10 +21,12 @@ build() {
 }
 
 run() {
-    if [[ -z "${@}" ]]; then
-       set -- sh
-    fi
-	docker run -it --rm --entrypoint ash \
+  DOCKER_INTERACTIVE=""
+  if [[ -z "${@}" ]]; then
+    DOCKER_INTERACTIVE="-it"
+    set -- sh
+  fi
+	docker run ${DOCKER_INTERACTIVE} --rm --entrypoint ash \
 		-v $(pwd)/build/docker-entrypoint.sh:/usr/local/bin/entrypoint.sh \
         -v $(pwd)/build/plugins.d:/usr/local/bin/plugins.d \
 		-v $(pwd)/templates:/templates \
@@ -39,7 +41,7 @@ test() {
     echo -n "Test: ${1}..."
     RES=$(run "${3}")
     EXPECTED="${2}"
-    if [[ "${RES}" != *"${EXPECT}"* ]]; then
+    if [[ "${RES}" != *"${EXPECTED}"* ]]; then
         fail "${EXPECTED}" "${RES}"
     fi
     ok

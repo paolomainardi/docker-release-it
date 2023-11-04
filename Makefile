@@ -9,3 +9,7 @@ dev:
 
 run:
 	docker run -it --rm -v $(PWD):/app paolomainardi/release-it
+
+test:
+	@chmod -R +x tests
+	@./tests/runner.sh

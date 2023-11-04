@@ -38,7 +38,7 @@ jobs:
 
       - name: Run tests
         run: |
-          ./tests/runner.sh
+          make test
 
       - name: Generate uuid from shortened commit SHA
         id: uuid
