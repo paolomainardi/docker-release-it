@@ -1,5 +1,7 @@
 #/bin/sh
 
+set -e
+
 # Color codes.
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -26,6 +28,7 @@ run() {
     DOCKER_INTERACTIVE="-it"
     set -- sh
   fi
+  build >/dev/null
 	docker run ${DOCKER_INTERACTIVE} --rm --entrypoint ash \
 		-v $(pwd)/build/docker-entrypoint.sh:/usr/local/bin/entrypoint.sh \
         -v $(pwd)/build/plugins.d:/usr/local/bin/plugins.d \
