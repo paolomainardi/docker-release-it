@@ -7,8 +7,6 @@ set -o pipefail
 
 # Set default values for the variables.
 BASE=${PWD}
-DOCKER_RELEASE_IT_BASE_TEMPLATE_FILE="/templates/.release-it.json.tpl"
-DOCKER_RELEASE_IT_USE_BASE_TEMPLATE="true"
 
 # Enable trace if DEBUG_TRACE is set.
 if [[ ! -z ${DEBUG_TRACE} ]]; then

@@ -49,9 +49,31 @@ test() {
     fi
     echo -n "Test: ${1}..."
     RES=$(run "${3}")
+    COMMAND="${4:-contains}"
     EXPECTED="${2}"
-    if [[ "${RES}" != *"${EXPECTED}"* ]]; then
-        fail "${EXPECTED}" "${RES}"
+    if [[ "${COMMAND}" == "contains" ]]; then
+        contains "${RES}" "${EXPECTED}"
+    elif [[ "${COMMAND}" == "equal" ]]; then
+        equal "${RES}" "${EXPECTED}"
+    else
+        fail "Unknown command ${COMMAND}."
     fi
-    ok
+}
+
+contains() {
+  RES="${1}"
+  EXPECTED="${2}"
+  if [[ "${RES}" != *"${EXPECTED}"* ]]; then
+    fail "${EXPECTED}" "${RES}"
+  fi
+  ok
+}
+
+equal() {
+  RES="${1}"
+  EXPECTED="${2}"
+  if [[ "${RES}" != "${EXPECTED}" ]]; then
+    fail "${EXPECTED}" "${RES}"
+  fi
+  ok
 }
