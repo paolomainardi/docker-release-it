@@ -15,6 +15,7 @@ COPY templates /templates
 WORKDIR /usr/src/app
 
 # Configure entrypoint.
+ENV PATH=/release-it/node_modules/.bin:${PATH}
 COPY build/docker-entrypoint.sh /usr/local/bin/
 COPY build/plugins.d /usr/local/bin/
 RUN ln -s /usr/local/bin/docker-entrypoint.sh /entrypoint.sh

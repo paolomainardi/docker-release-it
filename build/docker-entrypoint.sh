@@ -32,7 +32,6 @@ if [[ ! -z "${CI_COMMIT_REF_NAME}" ]]; then
 fi
 
 # If we set a gitlab project token, we can use it to push to the repository.
-# Taken from here: https://github.com/sparkfabrik/spark-k8s-deployer/blob/master/templates/scripts/ci_releases/setup_repo_for_writing.sh
 if [[ ! -z "${GITLAB_TOKEN}" ]]; then
   # Validate the variable.
   GITLAB_PROJECT_RW_AND_API_TOKEN="release-it:${GITLAB_TOKEN}"
