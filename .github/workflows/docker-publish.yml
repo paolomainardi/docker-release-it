@@ -49,7 +49,7 @@ jobs:
         id: push-step
         uses: docker/build-push-action@v5
         with:
-          context: build
+          context: .
           push: ${{ github.ref == 'refs/heads/main' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
