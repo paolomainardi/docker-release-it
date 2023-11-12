@@ -7,6 +7,10 @@ NC='\033[0m' # No Color.
 
 DOCKER_IMAGE="paolomainardi/release-it-test"
 
+if [[ ! -z $TRACE ]]; then
+  set -x
+fi
+
 fail() {
   echo -e "${RED}FAIL${NC}"
   echo "Expected: ${1}"

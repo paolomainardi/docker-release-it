@@ -15,13 +15,14 @@ fi
 
 # Test 1.
 EXPECT="Using default release-it template."
-SCRIPT="mkdir /test-1 && cd /test-1 && /usr/local/bin/plugins.d/merge-config.sh"
+SCRIPT="export DOCKER_RELEASE_IT_USE_BASE_TEMPLATE=true; mkdir /test-1 && cd /test-1 && /usr/local/bin/plugins.d/merge-config.sh"
 test "using default files if empty" "${EXPECT}" "${SCRIPT}"
 
 # Test 2.
 EXPECT_MERGE_1="Merging with default template."
 EXPECT_MERGE_2="\"test-presence\": true"
 SCRIPT=$(cat <<EOF
+    export DOCKER_RELEASE_IT_USE_BASE_TEMPLATE=true
     mkdir /test-1 && cd /test-1 && cp /tests/plugins.d/merge-config-files/.release-it.json . && /usr/local/bin/plugins.d/merge-config.sh
     cat .release-it.json
 EOF

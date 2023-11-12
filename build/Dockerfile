@@ -1,7 +1,7 @@
 FROM node:lts-alpine
 
 # Install some system dependencies.
-RUN apk add --no-cache git bash jq curl
+RUN apk add --no-cache git bash jq curl run-parts
 
 # Install release-it and other dependencies under /release-it.
 WORKDIR /release-it
@@ -17,6 +17,6 @@ WORKDIR /usr/src/app
 # Configure entrypoint.
 ENV PATH=/release-it/node_modules/.bin:${PATH}
 COPY build/docker-entrypoint.sh /usr/local/bin/
-COPY build/plugins.d /usr/local/bin/
+COPY build/plugins.d/ /usr/local/bin/plugins.d/
 RUN ln -s /usr/local/bin/docker-entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["docker-entrypoint.sh"]

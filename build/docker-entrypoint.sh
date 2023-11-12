@@ -46,7 +46,7 @@ if [[ ! -z "${GITLAB_TOKEN}" ]]; then
 fi
 
 # Run plugins.
-run-parts -v --exit-on-error /plugins.d
+run-parts -v --exit-on-error /usr/local/bin/plugins.d
 
 # if command starts with an option or is empty, prepend release-it
 if [ "${1}" = 'shell' ]; then
